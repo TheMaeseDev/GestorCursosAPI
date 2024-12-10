@@ -1,5 +1,9 @@
 using GestorCursosAPI.Data;
 using Microsoft.EntityFrameworkCore;
+using GestorCursosAPI.Repositories;
+using GestorCursosAPI.Services;
+using GestorCursosAPI.Repositories.CursoRepository;
+using GestorCursosAPI.Services.CursoServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +16,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<GestorCursosDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<ICursoRepository, CursoRepository>();
+builder.Services.AddScoped<ICursoService, CursoService>();
 
 var app = builder.Build();
 
