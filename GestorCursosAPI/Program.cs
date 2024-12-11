@@ -6,6 +6,8 @@ using GestorCursosAPI.Repositories.CursoRepository;
 using GestorCursosAPI.Services.CursoServices;
 using GestorCursosAPI.Repositories.EstudianteRepository;
 using GestorCursosAPI.Services.EstudianteServices;
+using GestorCursosAPI.Services.Relaciones.CursoEstudianteServices;
+using GestorCursosAPI.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,11 +21,15 @@ builder.Services.AddDbContext<GestorCursosDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddControllers();
 
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 builder.Services.AddScoped<ICursoRepository, CursoRepository>();
 builder.Services.AddScoped<ICursoService, CursoService>();
 
 builder.Services.AddScoped<IEstudianteRepository, EstudianteRepository>();
 builder.Services.AddScoped<IEstudianteService, EstudianteService>();
+
+builder.Services.AddScoped<ICursoEstudianteService, CursoEstudianteService>();
 
 var app = builder.Build();
 

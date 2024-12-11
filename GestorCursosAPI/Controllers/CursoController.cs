@@ -1,58 +1,68 @@
-﻿using GestorCursosAPI.Data;
+﻿using AutoMapper;
+using GestorCursosAPI.DTOs.Cursos;
 using GestorCursosAPI.Models;
-using GestorCursosAPI.Data;
-using GestorCursosAPI.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using GestorCursosAPI.Services.CursoServices;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GestorCursosAPI.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class CursoController : ControllerBase
+    [Route("api/[controller]")]
+    public class CursosController : ControllerBase
     {
         private readonly ICursoService _cursoService;
+        private readonly IMapper _mapper;
 
-        public CursoController(ICursoService cursoService)
+        public CursosController(ICursoService cursoService, IMapper mapper)
         {
             _cursoService = cursoService;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Curso>>> GetCursos()
+        public async Task<IActionResult> GetAllCursos()
         {
-            return Ok(await _cursoService.GetAllCursosAsync());
+            var cursos = await _cursoService.GetAllCursosAsync();
+            var cursoDtos = _mapper.Map<IEnumerable<CursoReadDto>>(cursos);
+            return Ok(cursoDtos);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Curso>> GetCurso(int id)
+        public async Task<IActionResult> GetCursoById(int id)
         {
             var curso = await _cursoService.GetCursoByIdAsync(id);
-
             if (curso == null)
             {
-                return NotFound();
+                return NotFound($"El curso con ID {id} no existe.");
             }
 
-            return Ok(curso);
+            var cursoDto = _mapper.Map<CursoReadDto>(curso);
+            return Ok(cursoDto);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Curso>> PostCurso(Curso curso)
+        public async Task<IActionResult> AddCurso([FromBody] CursoCreateDto cursoDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var curso = _mapper.Map<Curso>(cursoDto);
             await _cursoService.AddCursoAsync(curso);
-            return CreatedAtAction(nameof(GetCurso), new { id = curso.Id }, curso);
+            return CreatedAtAction(nameof(GetCursoById), new { id = curso.Id }, _mapper.Map<CursoReadDto>(curso));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCurso(int id, Curso curso)
+        public async Task<IActionResult> UpdateCurso(int id, [FromBody] CursoCreateDto cursoDto)
         {
-            if (id != curso.Id)
+            var curso = await _cursoService.GetCursoByIdAsync(id);
+            if (curso == null)
             {
-                return BadRequest();
+                return NotFound($"El curso con ID {id} no existe.");
             }
 
+            _mapper.Map(cursoDto, curso);
             await _cursoService.UpdateCursoAsync(curso);
             return NoContent();
         }
@@ -60,6 +70,12 @@ namespace GestorCursosAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCurso(int id)
         {
+            var curso = await _cursoService.GetCursoByIdAsync(id);
+            if (curso == null)
+            {
+                return NotFound($"El curso con ID {id} no existe.");
+            }
+
             await _cursoService.DeleteCursoAsync(id);
             return NoContent();
         }
