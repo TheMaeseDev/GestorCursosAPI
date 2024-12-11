@@ -14,5 +14,8 @@ namespace GestorCursosAPI.Models
         public DateTime? FechaFin { get; set; }    // Null si es asincronico
         public decimal Precio { get; set; }
         public int Oferta { get; set; } // Porcentaje de descuento
+
+        // Relación con Estudiantes
+        public ICollection<Estudiante> Estudiantes { get; set; } = new List<Estudiante>();
     }
 }
