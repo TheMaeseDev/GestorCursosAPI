@@ -4,6 +4,8 @@ using GestorCursosAPI.Repositories;
 using GestorCursosAPI.Services;
 using GestorCursosAPI.Repositories.CursoRepository;
 using GestorCursosAPI.Services.CursoServices;
+using GestorCursosAPI.Repositories.EstudianteRepository;
+using GestorCursosAPI.Services.EstudianteServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,9 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped<ICursoRepository, CursoRepository>();
 builder.Services.AddScoped<ICursoService, CursoService>();
+
+builder.Services.AddScoped<IEstudianteRepository, EstudianteRepository>();
+builder.Services.AddScoped<IEstudianteService, EstudianteService>();
 
 var app = builder.Build();
 
