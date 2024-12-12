@@ -17,5 +17,9 @@ namespace GestorCursosAPI.Models
 
         // Relación con Estudiantes
         public ICollection<Estudiante> Estudiantes { get; set; } = new List<Estudiante>();
+
+        //Relacion con Categoria
+        public int? CategoriaId { get; set; }
+        public Categoria Categoria { get; set; }
     }
 }
