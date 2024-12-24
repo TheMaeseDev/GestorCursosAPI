@@ -4,6 +4,7 @@ using GestorCursosAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestorCursosAPI.Migrations
 {
     [DbContext(typeof(GestorCursosDbContext))]
-    partial class GestorCursosDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241212132558_AddCategoriaModel")]
+    partial class AddCategoriaModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +55,7 @@ namespace GestorCursosAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categorias");
+                    b.ToTable("Categoria");
                 });
 
             modelBuilder.Entity("GestorCursosAPI.Models.Curso", b =>

@@ -8,6 +8,8 @@ using GestorCursosAPI.Repositories.EstudianteRepository;
 using GestorCursosAPI.Services.EstudianteServices;
 using GestorCursosAPI.Services.Relaciones.CursoEstudianteServices;
 using GestorCursosAPI.Mappings;
+using GestorCursosAPI.Repositories.CategoriaRepository;
+using GestorCursosAPI.Services.CategoriaServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +32,9 @@ builder.Services.AddScoped<IEstudianteRepository, EstudianteRepository>();
 builder.Services.AddScoped<IEstudianteService, EstudianteService>();
 
 builder.Services.AddScoped<ICursoEstudianteService, CursoEstudianteService>();
+
+builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
+builder.Services.AddScoped<ICategoriaService, CategoriaService>();
 
 var app = builder.Build();
 
