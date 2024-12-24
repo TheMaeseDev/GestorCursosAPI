@@ -1,5 +1,6 @@
 ﻿using GestorCursosAPI.Data;
 using GestorCursosAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GestorCursosAPI.Repositories.CategoriaRepository
 {
