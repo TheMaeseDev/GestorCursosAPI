@@ -20,6 +20,11 @@ namespace GestorCursosAPI.Data
                 .HasMany(c => c.Estudiantes)
                 .WithMany(e => e.Cursos)
                 .UsingEntity(j => j.ToTable("CursoEstudiantes"));
+
+
+            modelBuilder.Entity<Categoria>()
+               .HasKey(c => c.Id); // Clave primaria
+
         }
     }
 }
